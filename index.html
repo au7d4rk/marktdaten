@@ -134,7 +134,7 @@ function fmtP(v){return v==null||isNaN(v)?"–":(v>0?"+":"")+v.toFixed(1).replac
 function fmtK(v){if(v==null)return "–";const d=v>=1000?0:v>=10?2:4;return v.toLocaleString("de-AT",{minimumFractionDigits:d,maximumFractionDigits:d})}
 const dot = a => `<span class="dot ${a}" title="${DE[a]||a}"></span>`;
 const cls = v => v>0?"pos":v<0?"neg":"";
-const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&","<":"<",">":">",'"':"""}[c]));
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"\x26amp;","<":"\x26lt;",">":"\x26gt;",'"':"\x26quot;"}[c]));
 const datum = o => new Date(D0.getTime()+o*864e5).toISOString().slice(0,10);
 const sma = (a,n) => a.map((_,i)=> i<n-1?null:a.slice(i-n+1,i+1).reduce((s,x)=>s+x,0)/n);
 function ema(a,n){const k=2/(n+1);let e=null;return a.map(v=>v==null?null:(e=e==null?v:v*k+e*(1-k)));}
@@ -226,7 +226,7 @@ const V = {
    const avg=m.reduce((s,x)=>s+x.return_30t_pct,0)/m.length, c=zaehle(m);
    return `<div class="card"><h3>${GRUPPEN[g]} <span class="mute">(${m.length})</span></h3><div class="big ${cls(avg)}">${fmtP(avg)}</div><div class="mute">Ø 30-Tage-Return</div>
     <div class="bar">${["gruen","gelb","rot"].map(k=>`<div class="${k}" style="width:${c[k]/m.length*100}%"></div>`).join("")}</div>
-    <div class="mute">${dot("gruen")} ${c.gruen} &nbsp; ${dot("gelb")} ${c.gelb} &nbsp; ${dot("rot")} ${c.rot}</div></div>`;}).join("")+`</div>`;},
+    <div class="mute">${dot("gruen")} ${c.gruen} \x26nbsp; ${dot("gelb")} ${c.gelb} \x26nbsp; ${dot("rot")} ${c.rot}</div></div>`;}).join("")+`</div>`;},
  rankings(l){ return RANKINGS.map(r=>{ const id="rk_"+r[0]; if(!sortState[id]) sortState[id]={k:r[0],d:-1};
    return `<div class="sec">Nach ${r[1]}</div>`+tabelle(sortiert(l,id),[r],id);}).join("");},
  markt(l){ const P=D.A.phase, sc=P.score, col=P.phase==="Risk-on"?"#22c55e":P.phase==="Risk-off"?"#f04461":"#f5b82e";
@@ -239,7 +239,7 @@ const V = {
    <div class="meter"><i style="left:calc(${((sc+1)/2*100).toFixed(0)}% - 2px)"></i></div><div class="mute" style="font-size:11px;max-width:520px;display:flex;justify-content:space-between"><span>Risk-off</span><span>Neutral</span><span>Risk-on</span></div>
    <p>${esc(P.text)}</p></div>
   <div class="kpis">${k("S&P 500","^GSPC")}${k("Nasdaq 100","^NDX")}${k("DAX","^GDAXI")}${k("ATX","^ATX")}${k("Bitcoin","BTC-USD")}${k("Gold","GC=F")}${k("VIX","^VIX")}${k("US 10J","^TNX",v=>v.toFixed(2).replace(".",",")+" %")}${k("Dollar DXY","DX-Y.NYB")}${k("EUR/USD","EURUSD=X")}
-   <div class="kpi"><small>Crypto Fear & Greed</small><b>${fgv??"–"}</b><span class="mute">${esc(D.S.klasse||"")}</span>${spark(fg.slice(-60).map(x=>x[1]),150,26)}</div>
+   <div class="kpi"><small>Crypto Fear \x26amp; Greed</small><b>${fgv??"–"}</b><span class="mute">${esc(D.S.klasse||"")}</span>${spark(fg.slice(-60).map(x=>x[1]),150,26)}</div>
    <div class="kpi"><small>BTC-Dominanz</small><b>${S.btc_dominanz?(+S.btc_dominanz).toFixed(1).replace(".",",")+" %":"–"}</b><span class="mute">Krypto-MCap ${S.krypto_mcap_usd?(S.krypto_mcap_usd/1e12).toFixed(2).replace(".",",")+" Bio. $":"–"}</span></div>
    <div class="kpi"><small>Funding BTC / ETH (8h)</small><b>${S.funding_btc_pct!=null&&S.funding_btc_pct!==""?(+S.funding_btc_pct).toFixed(4).replace(".",",")+" %":"–"}</b><span class="mute">ETH ${S.funding_eth_pct!=null&&S.funding_eth_pct!==""?(+S.funding_eth_pct).toFixed(4).replace(".",",")+" %":"–"} · OKX</span></div>
    <div class="kpi"><small>Marktbreite</small><b>${D.A.phase.breite50} % / ${D.A.phase.breite200} %</b><span class="mute">über MA50 / MA200</span></div></div>
@@ -302,7 +302,7 @@ const V = {
     <div class="iv-h"><div class="iv-n">${nm(a)}<div class="iv-sub"><span class="iv-t">${esc(x.ticker)}</span><span class="iv-badge">${esc(GD[x.gruppe]||x.gruppe)}</span></div></div>
      <div class="iv-score">${pp(x.score)}<small>Score</small></div></div>
     <div class="iv-k">
-     <div><small>Ø 20 Tage</small><b class="${x.erw20>=0?"pos":"neg"}">${fmtP(x.erw20)}</b><span>B&H ${fmtP(x.bh20)}</span></div>
+     <div><small>Ø 20 Tage</small><b class="${x.erw20>=0?"pos":"neg"}">${fmtP(x.erw20)}</b><span>B\x26amp;H ${fmtP(x.bh20)}</span></div>
      <div><small>Konfidenz</small><b class="iv-kc ${kc}">${x.konfidenz}</b><i class="iv-bar"><i class="${kc}" style="width:${q.toFixed(0)}%"></i></i><span>${q.toFixed(0)} % Treffer</span></div>
      <div><small title="Chance/Risiko">CRV</small><b>${dz(x.crv,1)}</b><span>${x.crv_gekappt?"gekappt auf 10":"Ziel ÷ Stop"}</span></div>
      <div class="iv-sc"><small>Stop → Ziel</small><div class="iv-scale"><i style="left:${pos}%"></i></div>
