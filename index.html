@@ -84,6 +84,9 @@ details.wk>div{padding:0 14px 12px;font-size:14px;line-height:1.5}details.wk p{m
 #ov .in{max-width:1120px;margin:0 auto;padding:16px 18px 50px}
 .x{float:right;background:var(--glass2);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:7px 14px;cursor:pointer;font:inherit}
 svg.ch{width:100%;height:auto;display:block;background:linear-gradient(180deg,#ffffff0a,#ffffff03);border-radius:14px;border:1px solid var(--line)}
+.mdbar{display:flex;justify-content:space-between;gap:8px;margin:2px 0 8px}.mdb{background:#1f2633;color:#cbd5e1;border:1px solid #2f3747;border-radius:8px;padding:6px 12px;font-size:13px;margin-right:4px}.mdb.on{background:#3b82f6;border-color:#3b82f6;color:#fff}
+.mdtt{position:absolute;top:4px;background:rgba(15,19,27,.96);border:1px solid #334155;border-radius:10px;padding:6px 8px;font-size:11px;pointer-events:none;min-width:190px;box-shadow:0 4px 16px #0008;z-index:5}.mdth{font-weight:600;margin-bottom:3px;color:#e2e8f0}.mdtt div:not(.mdth){display:grid;grid-template-columns:10px 1fr auto auto;gap:5px;align-items:center;line-height:1.45}.mdtt i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.mdrk{display:grid;gap:4px}.mdr{display:grid;grid-template-columns:22px 16px 1fr auto 62px 30px;gap:6px;align-items:center;padding:6px 6px;border-radius:8px;background:#161b24;font-size:13px;cursor:pointer}.mdr.on{outline:1.5px solid #3b82f6;background:#1b2433}.mdr.off{opacity:.4}.mdr i{width:14px;height:4px;border-radius:2px;display:inline-block}.mdr small{text-align:right}.mdn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mdo{background:none;border:0;color:#8a93a6;font-size:16px;padding:2px}
 .leg{font-size:12px;color:var(--mute);margin:6px 0 12px}.leg i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin:0 4px 0 10px;border-radius:2px}
 .kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:12px 0}.kv div{padding:10px 12px;font-size:12px;color:var(--mute)}.kv b{display:block;font-size:17px;color:var(--fg)}
 .cm{border-collapse:separate;border-spacing:2px;font-size:11px}.cm td,.cm th{padding:0;border:0;text-align:center;min-width:24px;height:24px;font-size:10px;text-transform:none;letter-spacing:0}
@@ -699,12 +702,11 @@ const xl=[]; for(let i=0;i<n;i+=Math.max(1,Math.floor(n/5))) xl.push([i,v[i][0].
 const nam=t=>(D.assets.find(a=>a.ticker===t)||{name:t}).name;
 const rows=Object.entries(mt.horizonte||{}).flatMap(([h,o])=>Object.entries(o).map(([li,s])=>`<tr><td>${h} Tage</td><td><span class="tag ${li==="attraktiv"?"tg":"tr"}">${li}</span></td><td class="n">${s.n||0}</td><td class="n ${cls(s.avg)}">${s.n?fmtP(s.avg):"–"}</td><td class="n">${s.n?dz(s.hit,0)+" %":"–"}</td><td class="n ${cls(s.bench)}">${s.n&&s.bench!=null?fmtP(s.bench):"–"}</td></tr>`)).join("");
 const MD=D.A.musterdepots||{}, dt=MD.daten||[], R=MD.reihen||{}, KZ=MD.kennzahlen||{}, DP=MD.depots||{};
-const FAR={"Modell (Top-5)":"#22c55e","Wenig Risiko":"#facc15","Mittel":"#fb923c","Viel Risiko":"#ef4444","Breit gestreut":"#2dd4bf","Nur Grün":"#a3e635","Gegenstrategie":"#f472b6","Nur Krypto":"#f59e0b","Mit Ausstiegsregel":"#38bdf8","Prognose-Picks":"#e879f9","Momentum":"#f97316","ETF-Sparplan":"#94a3b8","S&P 500 (EUR)":"#60a5fa","MSCI World (EUR)":"#c084fc"};
+FAR=window.FAR={"Modell (Top-5)":"#22c55e","Wenig Risiko":"#facc15","Mittel":"#fb923c","Viel Risiko":"#ef4444","Breit gestreut":"#2dd4bf","Nur Grün":"#a3e635","Gegenstrategie":"#f472b6","Nur Krypto":"#f59e0b","Mit Ausstiegsregel":"#38bdf8","Prognose-Picks":"#e879f9","Momentum":"#f97316","ETF-Sparplan":"#94a3b8","S&P 500 (EUR)":"#60a5fa","MSCI World (EUR)":"#c084fc"};
 const nd=dt.length, xl2=[]; for(let i=0;i<nd;i+=Math.max(1,Math.floor(nd/5))) xl2.push([i,dt[i].slice(5)]);
 const pad=r=>Array(nd-r.length).fill(null).concat(r);
 const vgl=MD.daten?`<div class="sec">Musterdepots im Vergleich</div><div class="disc">${Object.keys(DP).length} Musterdepots mit je 500 € Startkapital zu Bitpanda-EUR-Preisen (0,1 % Kosten je Kauf/Umschichtung, Bruchteile). Drei sind fest gekauft, die anderen schichten nach festen Regeln um. Neu ab 2.11.: Prognose-Picks, Momentum und ETF-Sparplan. Alles in EUR, indexiert (Start = 100).</div>
-<div class="card"><h3>Verlauf (EUR, Start = 100)</h3>${nd>1?chart(nd,Object.entries(R).map(([n,r])=>({d:pad(r),col:FAR[n]||"#aaa",w:n.includes("(EUR)")?1:2})),{h:240,hlines:[{y:100,col:"#555"}],xl:xl2}):`<div class="mute" style="padding:20px 0">Gestartet am ${MD.start}. Die Kurve entsteht mit jedem weiteren Handelstag.</div>`}
-<div class="leg">${Object.keys(R).map(n=>`<i style="background:${FAR[n]||"#aaa"}"></i>${esc(n)}`).join("")}</div></div>
+<div class="card"><h3>Verlauf</h3><div id="mdc">${nd>1?mdChart():`<div class="mute" style="padding:20px 0">Gestartet am ${MD.start}. Die Kurve entsteht mit jedem weiteren Handelstag.</div>`}</div></div>
 <div class="tw" style="margin-top:12px"><table><tr><th>Depot</th><th class="n">Wert €</th><th class="n">Rendite</th><th class="n">Max DD</th><th class="n">Vol. p.a.</th></tr>${Object.entries(KZ).map(([n,k])=>`<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${FAR[n]||"#aaa"}"></i> ${esc(n)}</td><td class="n">${DP[n]?dz(DP[n].wert,2):"–"}</td><td class="n ${cls(k.rendite)}">${fmtP(k.rendite)}</td><td class="n neg">${fmtP(k.max_dd)}</td><td class="n">${k.vol!=null?dz(k.vol,1)+" %":"–"}</td></tr>`).join("")}${Object.entries(DP).filter(([n,d])=>d.geplant).map(([n,d])=>`<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${FAR[n]||"#aaa"}"></i> ${esc(n)}</td><td class="n mute" colspan="4">startet am ${+d.start.slice(8)}.${+d.start.slice(5,7)}.</td></tr>`).join("")}</table></div>
 <div style="margin-top:12px;display:grid;gap:12px">${Object.entries(DP).map(([n,d])=>`<div class="card"><h3><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${FAR[n]||"#aaa"}"></i> ${esc(n)} ${d.geplant?`<span class="tag" style="background:#334155;color:#e2e8f0">startet am ${+d.start.slice(8)}.${+d.start.slice(5,7)}.</span>`:`<span class="mute" style="font-size:12px">${dz(d.wert,2)} € von ${dz(d.start_eur,0)} €</span>`}</h3><p class="mute" style="margin:4px 0 8px;font-size:13px">${esc(d.beschreibung||"")}${d.start&&d.start!==MD.start?` Start ${d.start.slice(8)}.${d.start.slice(5,7)}.`:""}${d.cash?` · Bargeld ${dz(d.cash,2)} €`:""}</p><details${innerWidth>700&&d.positionen.length<=6?" open":""}><summary class="mute" style="cursor:pointer;font-size:13px">${d.positionen.length} Positionen anzeigen</summary><div class="tw"><table><tr><th>Titel</th><th class="n">Stück</th><th class="n">Kauf €</th><th class="n">Bitpanda €</th><th class="n">Wert €</th><th class="n">G/V</th></tr>${d.positionen.map(p=>`<tr><td><span class="lnk" data-a="${esc(p.ticker)}">${esc(p.name)}</span></td><td class="n">${dz(p.stueck,p.stueck<0.01?6:4)}</td><td class="n">${fz(p.kaufkurs)}</td><td class="n">${fz(p.kurs)}</td><td class="n">${dz(p.wert,2)}</td><td class="n ${cls(p.gv_pct)}">${fmtP(p.gv_pct)}</td></tr>`).join("")}</table></div></details></div>`).join("")}</div>
 <div class="sec">Modell-Depot (Top-5 attraktiv)</div>`:"";
@@ -730,6 +732,54 @@ ${a?`<div class="mute" style="font-size:12px">Kurs ${fmtK(a.kurs)} · 1T <span c
 return `<li>${b?`<span class="mk" style="--k:${b[1]}">${b[0]}</span> `:""}${m.url?`<a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.text)}</a>`:esc(m.text)}${m.quelle?` <span class="mute nw-q">· ${esc(QN(m.quelle))}</span>`:""}</li>`;}).join("")}</ul></div>`;}).join("")}</div>
 <div class="mute" style="font-size:12px;margin-top:6px"><span class="mk" style="--k:#22c55e">bestätigt</span> Nachrichtenagentur, offizielles Konto oder 2+ unabhängige Medien · <span class="mk" style="--k:#eab308">Gerücht/Leak</span> noch unbestätigt · <span class="mk" style="--k:#3b82f6">Meinung</span> Kommentar einer bekannten Markt-Stimme</div>`;}
 });
+/* Interaktives Musterdepot-Diagramm */
+let FAR={}; const MDS=(()=>{let o={};try{o=JSON.parse(localStorage.getItem("mdc")||"{}")}catch(_){} return {tf:o.tf||"all",mode:o.mode||"pct",off:o.off||[],sel:o.sel||null};})();
+const mdSave=()=>{try{localStorage.setItem("mdc",JSON.stringify(MDS))}catch(_){}};
+const MDBENCH="MSCI World (EUR)";
+function mdData(){ const MD=D.A.musterdepots||{}, dt=MD.daten||[], R=MD.reihen||{}, DP=MD.depots||{}, nd=dt.length;
+const pad=r=>Array(nd-r.length).fill(null).concat(r);
+let a=0; if(MDS.tf!=="all"){const t=new Date(dt[nd-1]); t.setDate(t.getDate()-(MDS.tf==="1w"?7:31)); const ts=t.toISOString().slice(0,10); a=Math.max(0,dt.findIndex(d=>d>=ts));}
+const S=Object.entries(R).filter(([n,r])=>r.some(v=>v!=null)).map(([n,r])=>{const full=pad(r), d=full.slice(a), b0=d.find(v=>v!=null), se=(DP[n]&&DP[n].start_eur)||500;
+const pct=d.map(v=>v==null||b0==null?null:(v/b0-1)*100), eur=d.map(v=>v==null?null:v*se/100);
+return {n,col:FAR[n]||"#aaa",bench:n.includes("(EUR)"),pct,eur,last:pct.filter(v=>v!=null).at(-1)};});
+return {dt:dt.slice(a),S};}
+function mdChart(){ const {dt,S}=mdData(), n=dt.length, W=Math.min(innerWidth-40,900), H=250, L=6, Rr=46, T=10, B=22;
+const vis=S.filter(s=>!MDS.off.includes(s.n)), key=MDS.mode==="eur"?"eur":"pct";
+let lo=1e9,hi=-1e9; vis.forEach(s=>s[key].forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}})); if(lo>hi){lo=0;hi=1;} if(key==="pct"){lo=Math.min(lo,0);hi=Math.max(hi,0);} const pd=(hi-lo)*.08||1; lo-=pd; hi+=pd;
+const X=i=>L+(n<2?0:i*(W-L-Rr)/(n-1)), Y=v=>T+(hi-v)*(H-T-B)/(hi-lo);
+const fv=v=>key==="eur"?dz(v,0)+" €":(v>0?"+":"")+dz(v,1)+" %";
+let g=""; for(let k=0;k<=4;k++){const v=lo+(hi-lo)*k/4; g+=`<line x1="${L}" x2="${W-Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="#2a3140"/><text x="${W-Rr+4}" y="${Y(v)+4}" fill="#8a93a6" font-size="10">${fv(v)}</text>`;}
+if(key==="pct") g+=`<line x1="${L}" x2="${W-Rr}" y1="${Y(0)}" y2="${Y(0)}" stroke="#666"/>`;
+const st=Math.max(1,Math.ceil(n/5)); for(let i=0;i<n;i+=st) g+=`<text x="${X(i)}" y="${H-6}" fill="#8a93a6" font-size="10" text-anchor="${i?"middle":"start"}">${+dt[i].slice(8)}.${+dt[i].slice(5,7)}.</text>`;
+const lines=vis.map(s=>{let p="",m=1; s[key].forEach((v,i)=>{if(v==null){m=1;return;} p+=(m?"M":"L")+X(i).toFixed(1)+" "+Y(v).toFixed(1); m=0;});
+const dim=MDS.sel&&MDS.sel!==s.n, on=MDS.sel===s.n;
+return `<path d="${p}" fill="none" stroke="${s.col}" stroke-width="${on?3.5:s.bench?1.8:2}" ${s.bench?`stroke-dasharray="5 4"`:""} stroke-linejoin="round" opacity="${dim?.18:1}"/>`+(n<=40?s[key].map((v,i)=>v==null?"":`<circle cx="${X(i)}" cy="${Y(v)}" r="${on?3:2}" fill="${s.col}" opacity="${dim?.18:1}"/>`).join(""):"");});
+if(MDS.sel){const k=vis.findIndex(s=>s.n===MDS.sel); if(k>=0){const x=lines.splice(k,1)[0]; lines.push(x);}}
+const btn=(a,v,t)=>`<button class="mdb${MDS[a]===v?" on":""}" data-md="${a}:${v}">${t}</button>`;
+const bv=(S.find(s=>s.n===MDBENCH)||{}).last;
+const rk=[...S].filter(s=>s.last!=null).sort((a,b)=>b.last-a.last);
+return `<div class="mdbar"><span>${btn("tf","1w","1W")}${btn("tf","1m","1M")}${btn("tf","all","Alles")}</span><span>${btn("mode","pct","%")}${btn("mode","eur","€")}</span></div>
+<div class="mdw" style="position:relative"><svg id="mdsvg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block;touch-action:pan-y;max-width:100%">${g}${lines.join("")}<line id="mdx" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="#cbd5e1" stroke-width="1" style="display:none"/></svg><div id="mdtt" class="mdtt" style="display:none"></div></div>
+<div class="mute" style="font-size:12px;margin:4px 0 8px">Finger aufs Diagramm legen und ziehen zeigt alle Werte. Tippen auf einen Namen hebt das Depot hervor, ⦸ blendet es aus. Gestrichelt = Vergleichsindex.</div>
+<div class="mdrk">${rk.map((s,i)=>{const d=bv!=null&&!s.bench?s.last-bv:null, off=MDS.off.includes(s.n);
+return `<div class="mdr${MDS.sel===s.n?" on":""}${off?" off":""}" data-md="sel:${esc(s.n)}"><b>${i+1}.</b><i style="background:${s.col}${s.bench?";background:repeating-linear-gradient(90deg,"+s.col+" 0 4px,transparent 4px 7px)":""}"></i><span class="mdn">${esc(s.n)}</span><span class="${cls(s.last)}">${fmtP(s.last)}</span><small class="${d==null?"mute":cls(d)}">${d==null?(s.bench?"Index":""):(d>=0?"+":"")+dz(d,1)+" Pp"}</small><button class="mdo" data-md="off:${esc(s.n)}" aria-label="ein/aus">${off?"○":"⦸"}</button></div>`;}).join("")}</div>
+<div class="mute" style="font-size:12px;margin-top:4px">Rendite im gewählten Zeitraum · Pp = Prozentpunkte besser oder schlechter als MSCI World. ${MDS.mode==="eur"?"€-Werte: indexierter Verlauf × Startkapital.":""}</div>`;}
+function mdTip(ev){ const sv=document.getElementById("mdsvg"); if(!sv) return; const {dt,S}=mdData(), n=dt.length, r=sv.getBoundingClientRect(), W=+sv.getAttribute("width"), sc=r.width/W;
+const x=(ev.clientX-r.left)/sc, i=Math.max(0,Math.min(n-1,Math.round((x-6)/((W-52)/Math.max(1,n-1)))));
+const cx=6+(n<2?0:i*(W-52)/(n-1)), ln=document.getElementById("mdx"), tt=document.getElementById("mdtt"); ln.setAttribute("x1",cx);ln.setAttribute("x2",cx);ln.style.display="";
+const zeit=i===n-1&&D.standz&&D.standz.includes(":")?" · "+esc(D.standz.split(" ").slice(-1)[0])+" Uhr":" · Schlusskurs";
+const rows=S.filter(s=>!MDS.off.includes(s.n)&&s.pct[i]!=null).sort((a,b)=>b.pct[i]-a.pct[i]).map(s=>`<div${MDS.sel&&MDS.sel!==s.n?` style="opacity:.45"`:""}><i style="background:${s.col}"></i><span>${esc(s.n)}</span><b>${dz(s.eur[i],2)} €</b><b class="${cls(s.pct[i])}">${fmtP(s.pct[i])}</b></div>`).join("");
+tt.innerHTML=`<div class="mdth">${+dt[i].slice(8)}.${+dt[i].slice(5,7)}.${dt[i].slice(0,4)}${zeit}</div>${rows}`; tt.style.display="block";
+const tw=tt.offsetWidth, px=cx*sc; tt.style.left=Math.max(0,Math.min(r.width-tw,px>r.width/2?px-tw-12:px+12))+"px";}
+function mdHide(){const t=document.getElementById("mdtt"),l=document.getElementById("mdx"); if(t)t.style.display="none"; if(l)l.style.display="none";}
+const mdRe=()=>{const c=document.getElementById("mdc"); if(c){c.innerHTML=mdChart(); mdSave();}};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-md]"); if(!b) return; e.stopPropagation(); const k=b.dataset.md.indexOf(":"), a=b.dataset.md.slice(0,k), v=b.dataset.md.slice(k+1);
+if(a==="tf"||a==="mode") MDS[a]=v; else if(a==="off"){MDS.off=MDS.off.includes(v)?MDS.off.filter(x=>x!==v):[...MDS.off,v]; if(MDS.sel===v) MDS.sel=null;} else if(a==="sel"){MDS.sel=MDS.sel===v?null:v; MDS.off=MDS.off.filter(x=>x!==v);} mdRe();},true);
+let mdT=null;
+document.addEventListener("pointerdown",e=>{if(e.target.closest("#mdsvg")){mdT=e.pointerType; mdTip(e);}});
+document.addEventListener("pointermove",e=>{if(e.target.closest("#mdsvg")&&(mdT||e.pointerType==="mouse")) mdTip(e);});
+document.addEventListener("pointerup",e=>{if(mdT&&mdT!=="mouse"){mdT=null; setTimeout(mdHide,2500);} else mdT=null;});
+document.addEventListener("pointerleave",e=>{if(e.target.id==="mdsvg"&&e.pointerType==="mouse") mdHide();},true);
 function sortiert(l,id){ const s=sortState[id]; return s?[...l].sort((a,b)=>((a[s.k]??-1e9)-(b[s.k]??-1e9))*s.d):l; }
 
 function pgVgl(V){ const C=V.vergleich; if(!C) return ""; const W={v1:"v1",v2:"v2",v3:"v3",ampel:"Ampel"}, a=v=>v==null?"–":dz(v*100,1), b=(x,m)=>x===m?` class="pos"`:"";
