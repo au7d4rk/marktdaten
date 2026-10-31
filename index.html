@@ -83,7 +83,7 @@ details.wk{border-radius:14px;background:var(--glass);border:1px solid var(--lin
 details.wk>div{padding:0 14px 12px;font-size:14px;line-height:1.5}details.wk p{margin:6px 0}.wk-ex{padding:8px 10px;border-radius:10px;background:#ffffff0a;border-left:3px solid #8aa4ff;font-size:13px;margin:8px 0}
 .wk-t{margin:20px 0 8px;font-size:15px;font-weight:750}.wk-l{font-size:12.5px}
 #tipx{position:fixed;left:12px;right:12px;bottom:16px;z-index:99;padding:12px 14px;border-radius:14px;background:#151b2e;border:1px solid #ffffff30;box-shadow:0 10px 30px #000a;font-size:13.5px;line-height:1.45;display:none}
-.ct{gap:6px;margin:6px 0}.ct .chip{cursor:pointer;color:inherit;font:inherit;font-size:12.5px;padding:6px 11px}.ctx{margin:4px 0 8px;font-size:13px}.ctx summary{cursor:pointer;color:#9aa4b8}.ctx p{margin:6px 0}.ctt{font-size:13.5px;line-height:1.5}
+.ct{gap:6px;margin:6px 0}.ct .chip{cursor:pointer;min-height:34px;color:inherit;font:inherit;font-size:12.5px;padding:6px 11px}.ctx{margin:4px 0 8px;font-size:13px}.ctx summary{cursor:pointer;color:#9aa4b8}.ctx p{margin:6px 0}.ctt{font-size:13.5px;line-height:1.5}
 .chip.on{background:var(--acc,#8aa4ff);color:#0b0f1a;font-weight:700}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:5px 10px;border-radius:20px;background:var(--glass2);border:1px solid var(--line);font-size:12px}
 #tip{position:fixed;pointer-events:none;background:rgba(10,14,26,.92);backdrop-filter:blur(10px);border:1px solid var(--line);padding:9px 11px;border-radius:12px;font-size:12px;display:none;z-index:30;max-width:250px;box-shadow:var(--sh)}
 #ov{position:fixed;inset:0;background:rgba(5,8,15,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow-y:auto;z-index:20;display:none;animation:fade .25s}
@@ -455,8 +455,9 @@ H("📊 Indikatoren in der App")+
 K("MA20 / MA50 / MA200","<p>Gleitende Durchschnitte der letzten 20, 50 bzw. 200 Tage. Kurs über dem Durchschnitt = Aufwärtstrend. MA20 kurzfristig, MA200 langfristig.</p>"+ex("Kurs 110 €, MA200 100 € → 10 % über dem langfristigen Trend."),["ampel","Ampel"])+
 K("Golden Cross / Death Cross","<p>Golden Cross: MA50 kreuzt den MA200 nach oben – Zeichen für einen neuen Aufwärtstrend. Death Cross: umgekehrt. Kommen oft spät, filtern aber Rauschen.</p>",["start","Heute (Alarme)"])+
 K("RSI","<p>Relative Strength Index (0–100): Verhältnis der Auf- zu Abwärtsbewegungen der letzten 14 Tage. Über 70 heiß gelaufen, unter 30 stark abverkauft.</p>"+ex("RSI 85 nach einer Rally: Rücksetzer wahrscheinlicher, aber starke Trends können lange überkauft bleiben."),["ampel","Ampel"])+
-K("MACD","<p>Differenz zweier Durchschnitte (12 und 26 Tage) mit Signallinie (9). Kreuzt der MACD die Signallinie nach oben, nimmt das Momentum zu.</p>",["heatmap","Detailansicht (Asset antippen)"])+
-K("Bollinger-Bänder","<p>Band um den MA20 im Abstand von zwei Standardabweichungen. Am oberen Band ist der Kurs relativ hoch, am unteren relativ tief. Enge Bänder kündigen oft größere Bewegungen an.</p>")+
+K("MACD","<p>Differenz zweier Durchschnitte (12 und 26 Tage) mit Signallinie (9). <b>So liest du es:</b> Blaue Linie über der lila Signallinie = Schwung nimmt zu, darunter = Schwung lässt nach. Die Balken (Histogramm) zeigen den Abstand: wachsende helle Balken = Aufwärtsschwung wird stärker, schrumpfende = er flacht ab. Über der Nulllinie liegt der kurze Schnitt über dem langen (eher Aufwärtstrend). In Seitwärtsphasen gibt es viele Fehlsignale – nie allein handeln.</p>",["heatmap","Detailansicht (Asset antippen)"])+
+K("Bollinger-Bänder","<p>Band um den MA20 im Abstand von zwei Standardabweichungen (20 Tage, 2σ). <b>So liest du es:</b> Am oberen Band ist der Kurs im Vergleich zu den letzten Wochen hoch, am unteren tief – das ist aber kein Verkaufs- oder Kaufsignal: In starken Trends „läuft“ der Kurs oft am Band entlang. Werden die Bänder sehr eng (Squeeze), ist es ruhig; danach folgt oft eine größere Bewegung, die Richtung verraten die Bänder nicht.</p>")+
+K("Volumen","<p>Wie viel an einem Tag gehandelt wurde (Balken, relativ zum Jahreshöchstwert). <b>So liest du es:</b> Steigt der Kurs bei hohem Volumen, steht viel Geld dahinter – die Bewegung ist eher belastbar. Steigt er bei dünnem Volumen, ist sie wackeliger. Sehr hohe Ausschläge kommen oft bei News, Zahlen oder Panik. Bei Indizes und Währungen gibt es kein sinnvolles Volumen, dort wird es ausgeblendet.</p>")+
 K("Fibonacci-Retracements","<p>Marken bei 23,6 %, 38,2 %, 50 %, 61,8 % und 78,6 % der Jahresspanne. Viele Händler achten darauf, daher wirken sie oft als Unterstützung oder Widerstand.</p>"+ex("Tief 50 €, Hoch 100 € → 61,8 %-Rücksetzer liegt bei 69,10 €."),["ideen","Investment-Ideen"])+
 K("ATR","<p>Average True Range: die durchschnittliche Tagesspanne aus Tageshoch, -tief und Vortagesschluss. Hilft, Stops weit genug zu setzen.</p>")+
 K("Unterstützung und Widerstand","<p>Preiszonen, an denen der Kurs im letzten Jahr mehrmals gedreht hat. Die App sucht Hoch- und Tiefpunkte und bündelt nahe beieinander liegende zu Zonen. Je öfter getestet, desto wichtiger.</p>"+ex("Dreimal bei rund 95 € gedreht → 95 € gilt als Boden. Fällt der Kurs klar darunter, wird der alte Boden oft zur neuen Decke."),["heatmap","Detailansicht → Werkzeuge"])+
@@ -813,7 +814,7 @@ return `<tr><td>${esc(k)}</td><td class="n"${b(m.auc_v1,mx)}>${a(m.auc_v1)}</td>
 const sg2=v=>v==null?"–":(v>0?"+":"")+dz(v,1)+" Pp";
 /* ===================== DETAILANSICHT ===================== */
 // Generischer Linienchart als SVG: serien=[{d:[...],col,w,dash}], bands=[{hi:[],lo:[],col}], hlines=[{y,col,lab}]
-function chart(n,serien,{h=260,bands=[],hlines=[],zones=[],bars=null,ymin,ymax,xl=[]}={}){
+function chart(n,serien,{h=260,bands=[],hlines=[],zones=[],bars=null,barcol=null,ymin,ymax,xl=[]}={}){
 const W=1000,P={l:8,r:62,t:8,b:20}, vals=[];
 serien.forEach(s=>s.d.forEach(v=>v!=null&&vals.push(v))); bands.forEach(b=>[...b.hi,...b.lo].forEach(v=>v!=null&&vals.push(v)));
 if(bars) bars.forEach(v=>v!=null&&vals.push(v)); hlines.forEach(l=>vals.push(l.y));
@@ -827,7 +828,7 @@ g+=`<path d="${s}" fill="${b.col}" stroke="none"/>`;});
 zones.forEach(z=>{const y1=Y(Math.min(z.hi,hi)),y2=Y(Math.max(z.lo,lo));if(y2<=y1)return;g+=`<rect x="${P.l}" width="${W-P.l-P.r}" y="${y1}" height="${y2-y1}" fill="${z.col}"/><text x="${W-P.r+4}" y="${(y1+y2)/2+4}" fill="${z.ln}" font-size="13">${z.lab}</text>`;});
 hlines.forEach(l=>{g+=`<line x1="${P.l}" x2="${W-P.r}" y1="${Y(l.y)}" y2="${Y(l.y)}" stroke="${l.col}" stroke-dasharray="4 4" stroke-width="1"/>`+
 (l.lab?`<text x="${W-P.r+4}" y="${Y(l.y)+4}" fill="${l.col}" font-size="13">${l.lab}</text>`:"");});
-if(bars){const z=Y(0),bw=(W-P.l-P.r)/n; bars.forEach((v,i)=>{if(v==null)return; g+=`<rect x="${X(i)-bw/2}" width="${bw*0.8}" y="${Math.min(Y(v),z)}" height="${Math.abs(Y(v)-z)}" fill="${ymin===0?"#6d8cff77":v>=0?"#22c55e88":"#ef444488"}"/>`;});}
+if(bars){const z=Y(0),bw=(W-P.l-P.r)/n; bars.forEach((v,i)=>{if(v==null)return; g+=`<rect x="${X(i)-bw/2}" width="${bw*0.8}" y="${Math.min(Y(v),z)}" height="${Math.abs(Y(v)-z)}" fill="${barcol?barcol(v):ymin===0?"#6d8cff77":v>=0?"#22c55e88":"#ef444488"}"/>`;});}
 serien.forEach(s=>{g+=`<path d="${path(s.d)}" fill="none" stroke="${s.col}" stroke-width="${s.w||1.5}" ${s.dash?`stroke-dasharray="${s.dash}"`:""} vector-effect="non-scaling-stroke"/>`;});
 xl.forEach(([i,t])=>{g+=`<text x="${X(i)}" y="${h-5}" fill="#8a93a6" font-size="12" text-anchor="middle">${t}</text>`;});
 return g+`</svg>`;
@@ -893,13 +894,14 @@ const CT=[["ma","Gleitende Ø","Durchschnittskurse der letzten 20, 50 und 200 Ta
 ["piv","Pivot (Woche)","Klassische Pivot-Punkte aus Hoch, Tief und Schluss der Vorwoche. P = Mittellinie, R1/R2 = Widerstände, S1/S2 = Unterstützungen. Viele Kurzfrist-Händler orientieren sich daran."],
 ["ichi","Ichimoku","Japanisches Trendsystem. Kurs über der Wolke = Aufwärtstrend, darunter = Abwärtstrend, in der Wolke = unklar. Grüne Wolke = Stimmung positiv. Tenkan (schnell) über Kijun (langsam) = Schwung nach oben."],
 ["reg","Trendkanal","Lineare Regression der letzten 120 Tage mit ±2σ-Rändern. Zeigt die Trendrichtung; am oberen Rand ist der Kurs weit gelaufen, am unteren günstig im Trend."],
-["macd","MACD","Schwung-Anzeige aus 12- und 26-Tage-Durchschnitt. Über der Signallinie = Schwung nimmt zu."],
+["macd","MACD","Schwung-Anzeige aus 12- und 26-Tage-Durchschnitt mit Signallinie (9) und Histogramm. Blau über Lila = Schwung nimmt zu; wachsende Balken = er wird stärker."],
+["vol","Volumen","Tagesumsatz als Balken. Kursbewegungen mit hohem Volumen sind belastbarer als solche mit dünnem Umsatz. Nur bei Assets mit Volumendaten."],
 ["rsi","RSI","0–100: Verhältnis von Auf- zu Abwärtstagen (14 Tage). Über 70 heiß gelaufen, unter 30 abverkauft. Im Backtest war über 70 eher ein Zeichen für Stärke."],
 ["sto","Stochastik","0–100: Wo liegt der Kurs innerhalb der Spanne der letzten 14 Tage (%K, geglättet 3)? Über 80 = nahe am Hoch, unter 20 = nahe am Tief. Kreuzt %K die %D-Linie, dreht oft der kurzfristige Schwung."],
 ["adx","ADX","Trendstärke 0–100, egal in welche Richtung. Über 25 = klarer Trend, unter 20 = Seitwärtsphase. +DI über −DI = Käufer stärker."],
 ["aus","Stop/Ziele","Stop (rot), nachziehender Stop (orange) und Kursziele T1–T3 (grün) aus dem Reiter Ausstieg."],
 ["rs","Rel. Stärke","Kurs geteilt durch den Markt (S&P 500, bei Krypto Bitcoin), Start = 100. Steigt die Linie, läuft der Wert besser als der Markt."]];
-const CT_DEF={ma:1,bb:1,fib:1,sr:1,macd:1,rsi:1,aus:1};
+const CT_DEF={ma:1,bb:1,fib:1,sr:1,macd:1,rsi:1,aus:1,vol:1};
 function ctSel(){try{return Object.assign({},CT_DEF,JSON.parse(localStorage.getItem("charttools")||"null")||{});}catch(e){return {...CT_DEF};}}
 let ctT=null;
 function swings(h,l,w=5){const H=[],L=[];for(let i=w;i<h.length-w;i++){let mh=true,ml=true;for(let j=i-w;j<=i+w;j++){if(h[j]>h[i])mh=false;if(l[j]<l[i])ml=false;}if(mh)H.push(h[i]);if(ml)L.push(l[i]);}return H.concat(L);}
@@ -934,7 +936,9 @@ const e12=ema(c,12),e26=ema(c,26),macd=c.map((_,i)=>e12[i]-e26[i]),sigl=ema(macd
 const xl=[]; for(let i=0;i<N;i+=Math.floor(N/5)) xl.push([i,datum(a.o[off+i]).slice(2,7)]);
 const ser=[{d:cut(c),col:"#e6e9ef",w:1.8}], bands=[], hl=[], zones=[], leg=[["#e6e9ef","Kurs"]], txt=[];
 if(S.ma){ser.push({d:cut(m20),col:"#60a5fa"},{d:cut(m50),col:"#eab308"},{d:cut(m200),col:"#c084fc"});leg.push(["#60a5fa","MA20"],["#eab308","MA50"],["#c084fc","MA200"]);}
-if(S.bb){bands.push({hi:cut(m20.map((m,i)=>m==null?null:m+2*sd[i])),lo:cut(m20.map((m,i)=>m==null?null:m-2*sd[i])),col:"#60a5fa1a"});leg.push(["#60a5fa44","Bollinger"]);}
+if(S.bb){const bo=m20.map((m,i)=>m==null?null:m+2*sd[i]),bu=m20.map((m,i)=>m==null?null:m-2*sd[i]);bands.push({hi:cut(bo),lo:cut(bu),col:"#a5b4fc14"});ser.push({d:cut(bo),col:"#a5b4fc66",w:1,dash:"2 3"},{d:cut(bu),col:"#a5b4fc66",w:1,dash:"2 3"});leg.push(["#a5b4fc88","Bollinger 20/2σ"]);
+const bw=sd.map((s,i)=>s==null||!m20[i]?null:4*s/m20[i]),bwN=bw.slice(-126).filter(x=>x!=null),pb=(p-bu.at(-1))/(bo.at(-1)-bu.at(-1));
+if(bwN.length>20){const rk=bwN.filter(x=>x<=bw.at(-1)).length/bwN.length;txt.push(`Bollinger: %B ${dz(pb*100,0)} % (${pb>1?"über dem oberen Band":pb<0?"unter dem unteren Band":pb>0.8?"nahe oberem Band":pb<0.2?"nahe unterem Band":"mittig"}), Bandbreite ${rk<=0.15?"sehr eng – Squeeze, oft vor größerer Bewegung":rk>=0.85?"sehr weit – unruhige Phase":"normal"}.`);}}
 if(S.fib){FIB.forEach(f=>hl.push({y:a.hi-(a.hi-a.lo)*f,col:"#f9731699",lab:dz(f*100,1)}));leg.push(["#f97316","Fibonacci"]);}
 if(S.fibx){const r=a.hi-a.lo;[[1.272,"127"],[1.618,"162"]].forEach(([f,t])=>{hl.push({y:a.lo+r*f,col:"#fb7185aa",lab:"↑"+t});const d=a.hi-r*f;if(d>0)hl.push({y:d,col:"#fb7185aa",lab:"↓"+t});});leg.push(["#fb7185","Fib-Ziele"]);
 txt.push(`Fibonacci-Ziele: über dem Hoch ${fmtK(a.lo+r*1.272)} (127,2 %) und ${fmtK(a.lo+r*1.618)} (161,8 %).`);}
@@ -950,11 +954,13 @@ if(S.reg&&n>=120){const r=regKanal(c);ser.push({d:cut(r.m),col:"#a3e635",w:1},{d
 txt.push(`Trendkanal 120 T: ${r.pa>=0?"steigend":"fallend"} (${fmtP(r.pa)} aufs Jahr gerechnet), Kurs bei ${dz(r.z,1)} σ ${r.z>1.5?"– nahe am oberen Rand":r.z<-1.5?"– nahe am unteren Rand":"– mitten im Kanal"}.`);}
 if(S.aus){const u=(D.AU&&D.AU.a||[]).find(x=>x.t===a.ticker); if(u){hl.push({y:u.st,col:"#ef4444dd",lab:"Stop"},{y:u.tr,col:"#fb923cdd",lab:"Trail"});u.T.forEach((t,i)=>hl.push({y:t.p,col:"#22c55edd",lab:"T"+(i+1)}));leg.push(["#ef4444","Stop"],["#fb923c","Trailing"],["#22c55e","Ziele"]);
 txt.push(`Ausstieg: Stop ${fmtK(u.st)} (${fmtP(u.sta)}), nachziehender Stop ${fmtK(u.tr)} (${fmtP(u.tra)})${u.T.length?", Ziele "+u.T.map(t=>fmtK(t.p)+" (CRV "+dz(t.crv,1)+")").join(", "):""}.${u.F.length?" 🔥 "+u.F.join(", ")+".":""}`);}}
-const chips=`<div class="chips ct">${CT.map(([k,lab,ex])=>`<button class="chip${S[k]?" on":""}" data-ct="${k}" title="${esc(ex)}">${lab}</button>`).join("")}</div>
+const hasV=!/^\^|=X$/.test(a.ticker)&&a.v&&a.v.filter(x=>x>0).length>20;
+const chips=`<div class="chips ct">${CT.filter(([k])=>k!=="vol"||hasV).map(([k,lab,ex])=>`<button class="chip${S[k]?" on":""}" data-ct="${k}" title="${esc(ex)}">${lab}</button>`).join("")}</div>
 <details class="ctx"><summary>ⓘ Was zeigen die Werkzeuge?</summary>${CT.map(([k,lab,ex])=>`<p><b>${lab}:</b> ${esc(ex)}</p>`).join("")}</details>`;
 let g=chips+chart(N,ser,{h:320,bands,hlines:hl,zones,xl})+`<div class="leg">${leg.map(([col,t])=>`<i style="background:${col}"></i>${t}`).join("")}</div>`+(txt.length?`<div class="disc ctt">${txt.map(t=>"• "+t).join("<br>")}</div>`:"");
-if(a.v&&a.v.some(x=>x>0)) g+=`<div class="sec">Volumen</div>${chart(N,[],{h:90,bars:cut(a.v.length===c.length?a.v:Array(c.length-a.v.length).fill(null).concat(a.v)),ymin:0})}`;
-if(S.macd) g+=`<div class="sec">MACD (12/26/9) <span class="mute">– ${macd.at(-1)>sigl.at(-1)?"über":"unter"} Signallinie</span></div>${chart(N,[{d:cut(macd),col:"#60a5fa"},{d:cut(sigl),col:"#f97316"}],{h:120,bars:cut(hist),hlines:[{y:0,col:"#555"}],xl})}`;
+if(S.vol&&hasV){const vv=a.v.length===c.length?a.v:Array(c.length-a.v.length).fill(null).concat(a.v),f0=vv.findIndex(x=>x>0),vm=sma(vv.map(x=>x||0),20).map((x,i)=>i<f0+19?null:x),rv=vm.at(-1)?vv.at(-1)/vm.at(-1):null;
+g+=`<div class="sec">Volumen <span class="mute">– ${rv==null?"":"heute "+dz(rv,1)+"× des 20-Tage-Schnitts"}</span></div>${chart(N,[{d:cut(vm),col:"#e5e7eb99",w:1}],{h:80,bars:cut(vv),ymin:0})}<div class="leg"><i style="background:#6d8cff77"></i>Volumen<i style="background:#e5e7eb99"></i>Ø 20 Tage</div>`;}
+if(S.macd) g+=`<div class="sec">MACD (12/26/9) <span class="mute">– ${macd.at(-1)>sigl.at(-1)?"über":"unter"} Signallinie</span></div>${chart(N,[{d:cut(macd),col:"#60a5fa",w:1.6},{d:cut(sigl),col:"#d8b4fe"}],{h:110,bars:cut(hist),barcol:v=>v>=0?"#93c5fdbb":"#94a3b8aa",hlines:[{y:0,col:"#555"}],xl})}<div class="leg"><i style="background:#60a5fa"></i>MACD<i style="background:#d8b4fe"></i>Signal<i style="background:#93c5fdbb"></i>Histogramm +<i style="background:#94a3b8aa"></i>Histogramm −</div>`;
 if(S.rsi) g+=`<div class="sec">RSI 14 <span class="mute">– ${dz(rsi.at(-1),0)}</span></div>${chart(N,[{d:cut(rsi),col:"#c084fc"}],{h:120,ymin:0,ymax:100,hlines:[{y:70,col:"#ef4444",lab:"70"},{y:30,col:"#22c55e",lab:"30"}],xl})}`;
 if(S.sto){const s=stochSer(c,h,l);g+=`<div class="sec">Stochastik (14,3) <span class="mute">– %K ${dz(s.K.at(-1),0)}, %D ${dz(s.D.at(-1),0)}${s.K.at(-1)>80?" (nahe Hoch)":s.K.at(-1)<20?" (nahe Tief)":""}</span></div>${chart(N,[{d:cut(s.K),col:"#38bdf8"},{d:cut(s.D),col:"#f97316"}],{h:120,ymin:0,ymax:100,hlines:[{y:80,col:"#ef4444",lab:"80"},{y:20,col:"#22c55e",lab:"20"}],xl})}<div class="leg"><i style="background:#38bdf8"></i>%K<i style="background:#f97316"></i>%D</div>`;}
 if(S.adx){const x=adxSer(c,h,l),A=x.A.at(-1);g+=`<div class="sec">ADX / DI (14) <span class="mute">– ADX ${dz(A,0)}: ${A>25?"klarer Trend":A<20?"kein Trend":"schwacher Trend"}, ${x.P.at(-1)>x.M.at(-1)?"Käufer":"Verkäufer"} stärker</span></div>${chart(N,[{d:cut(x.A),col:"#e5e7eb",w:1.8},{d:cut(x.P),col:"#22c55e"},{d:cut(x.M),col:"#ef4444"}],{h:120,ymin:0,hlines:[{y:25,col:"#888",lab:"25"}],xl})}<div class="leg"><i style="background:#e5e7eb"></i>ADX<i style="background:#22c55e"></i>+DI<i style="background:#ef4444"></i>−DI</div>${hok?"":`<div class="mute" style="font-size:11px">Ohne Tages-Hoch/-Tief: aus Schlusskursen genähert.</div>`}`;}
