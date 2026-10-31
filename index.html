@@ -606,6 +606,12 @@ ideen(l){ const I=D.A.ideen; if(!I) return `<div class="card">Keine Ideen-Daten.
 const fk=v=>v>=1000?v.toLocaleString("de-AT",{maximumFractionDigits:0}):v.toLocaleString("de-AT",{minimumFractionDigits:2,maximumFractionDigits:v>=10?2:4});
 const GD={Oesterreich:"Österreich",Aktien:"Aktien/Tech",Waehrungen:"Währungen",Halbleiter:"Halbleiter/KI",Energiewende:"Energiewende/Uran",Schwellenlaender:"Schwellenländer",KryptoAktien:"Krypto-Aktien"};
 const pp=v=>(v>0?"+":"")+dz(v,1);
+const WHG=t=>/-USD$/.test(t)?"$":/\.(DE|VI|PA|AS|MI|MC|BR|HE|F)$/.test(t)?"€":/\.HK$/.test(t)?"HKD":/\.(SS|SZ)$/.test(t)?"CNY":/\.NS$/.test(t)?"INR":/\.T$/.test(t)?"JPY":/\.L$/.test(t)?"GBp":/\.SW$/.test(t)?"CHF":/\.(CO)$/.test(t)?"DKK":/^\^/.test(t)?"Pkt.":/=X$/.test(t)?"":"$";
+const kursK=(x,a)=>{ a=D.assets.find(y=>y.ticker===x.ticker)||a; const c=a.c||[], n=c.length, v=n?c[n-1]:x.kurs, vv=n>1?c[n-2]:null, ch=vv?(v/vv-1)*100:null;
+const B=D.BP||{}, b=(B.preise||{})[x.ticker], bp=b&&b.eur!=null;
+const st=bp?(([d,z])=>(d||"").split("-").reverse().slice(0,2).join(".")+". "+(z||""))(String(B.stand||"").split(" ")):"", dt=(a.datum||"").split("-").reverse().slice(0,2).join(".")+".";
+const pr=bp?`${fk(b.eur)} €`:`${fk(v)}${WHG(x.ticker)?" "+WHG(x.ticker):""}`;
+return `<div class="iv-px"><small>${bp?"Kurs Bitpanda":"Kurs"}</small><b>${pr}</b><span>${ch==null?"":`<em class="${ch>=0?"pos":"neg"}">${ch>=0?"▲":"▼"} ${fmtP(ch)}</em> · `}Stand ${bp?st:dt}</span></div>`;};
 const karte=(x,gut)=>{ const a=D.assets[x.ticker]||{ticker:x.ticker,name:x.name};
 const q=gut?x.p_up:100-x.p_up, kc=x.konfidenz==="hoch"?"g":x.konfidenz==="mittel"?"y":"r";
 const lo=x.stop, hi=x.ziel, pos=Math.max(0,Math.min(100,(x.kurs-lo)/(hi-lo)*100));
@@ -617,8 +623,9 @@ return `<article class="iv-card ${gut?"iv-g":"iv-r"}">
 <div class="iv-h"><div class="iv-n">${nm(a)}<div class="iv-sub"><span class="iv-t">${esc(x.ticker)}</span><span class="iv-badge">${esc(GD[x.gruppe]||x.gruppe)}</span></div></div>
 <div class="iv-score">${pp(x.score)}<small>Score</small></div></div>
 <div class="iv-k">
-<div><small>Ø 20 Tage</small><b class="${x.erw20>=0?"pos":"neg"}">${fmtP(x.erw20)}</b><span>B\x26amp;H ${fmtP(x.bh20)}</span></div>
+${kursK(x,a)}
 <div><small>Konfidenz</small><b class="iv-kc ${kc}">${x.konfidenz}</b><i class="iv-bar"><i class="${kc}" style="width:${q.toFixed(0)}%"></i></i><span>${q.toFixed(0)} % Treffer</span></div>
+<div><small>Ø 20 Tage</small><b class="${x.erw20>=0?"pos":"neg"}">${fmtP(x.erw20)}</b><span>B\x26amp;H ${fmtP(x.bh20)}</span></div>
 <div><small title="Chance/Risiko">CRV</small><b>${dz(x.crv,1)}</b><span>${x.crv_gekappt?"gekappt auf 10":"Ziel ÷ Stop"}</span></div>
 <div class="iv-sc"><small>Stop → Ziel</small><div class="iv-scale"><i style="left:${pos}%"></i></div>
 <div class="iv-sl"><span class="neg">${fk(x.stop)}<em>${fmtP(x.stop_abst)}</em></span><span class="pos">${fk(x.ziel)}<em>${fmtP(x.ziel_abst)}</em></span></div></div>
@@ -640,7 +647,7 @@ return `<style>
 .iv-g .iv-score{background:#22c55e22;color:#4ade80}.iv-r .iv-score{background:#f0446122;color:#fb7185}
 .iv-k{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.iv-k>div{background:#ffffff08;border:1px solid var(--line);border-radius:12px;padding:9px 10px;min-width:0;display:flex;flex-direction:column;gap:3px}
 .iv-k small{font-size:9.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.iv-k b{font-size:17px;font-variant-numeric:tabular-nums}.iv-k span{font-size:11px;color:var(--mute);white-space:nowrap}
+.iv-k b{font-size:17px;font-variant-numeric:tabular-nums}.iv-k span{font-size:11px;color:var(--mute);white-space:nowrap}.iv-px em{font-style:normal;font-weight:600}.iv-k .iv-sc{grid-column:1/-1}
 .iv-kc.g{color:#4ade80}.iv-kc.y{color:var(--y)}.iv-kc.r{color:#fb7185}
 .iv-bar{display:block;height:4px;border-radius:3px;background:#ffffff14;overflow:hidden}.iv-bar i{display:block;height:100%}.iv-bar .g{background:var(--g)}.iv-bar .y{background:var(--y)}.iv-bar .r{background:var(--r)}
 .iv-scale{position:relative;height:6px;border-radius:4px;margin:8px 0 4px;background:linear-gradient(90deg,#f04461aa,#ffffff22 50%,#22c55eaa)}
