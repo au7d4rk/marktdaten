@@ -740,8 +740,11 @@ function mdData(){ const MD=D.A.musterdepots||{}, dt=MD.daten||[], R=MD.reihen||
 const pad=r=>Array(nd-r.length).fill(null).concat(r);
 let a=0; if(MDS.tf!=="all"){const t=new Date(dt[nd-1]); t.setDate(t.getDate()-(MDS.tf==="1w"?7:31)); const ts=t.toISOString().slice(0,10); a=Math.max(0,dt.findIndex(d=>d>=ts));}
 const S=Object.entries(R).filter(([n,r])=>r.some(v=>v!=null)).map(([n,r])=>{const full=pad(r), d=full.slice(a), b0=d.find(v=>v!=null), se=(DP[n]&&DP[n].start_eur)||500;
-const pct=d.map(v=>v==null||b0==null?null:(v/b0-1)*100), eur=d.map(v=>v==null?null:v*se/100);
-return {n,col:FAR[n]||"#aaa",bench:n.includes("(EUR)"),pct,eur,last:pct.filter(v=>v!=null).at(-1)};});
+const eur=d.map(v=>v==null?null:v*se/100), IV=(MD.investiert||{})[n];
+let pct, spar=!!IV;
+if(spar){const iv=pad(IV).slice(a), e0=eur.find(v=>v!=null); pct=eur.map((v,i)=>v==null||e0==null?null:iv[i]>0?(v-e0)/iv[i]*100:0);}
+else pct=d.map(v=>v==null||b0==null?null:(v/b0-1)*100);
+return {n,col:FAR[n]||"#aaa",bench:n.includes("(EUR)"),spar,pct,eur,last:pct.filter(v=>v!=null).at(-1)};});
 return {dt:dt.slice(a),S};}
 function mdChart(){ const {dt,S}=mdData(), n=dt.length, W=Math.min(innerWidth-40,900), H=250, L=6, Rr=46, T=10, B=22;
 const vis=S.filter(s=>!MDS.off.includes(s.n)), key=MDS.mode==="eur"?"eur":"pct";
@@ -762,8 +765,8 @@ return `<div class="mdbar"><span>${btn("tf","1w","1W")}${btn("tf","1m","1M")}${b
 <div class="mdw" style="position:relative"><svg id="mdsvg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block;touch-action:pan-y;max-width:100%">${g}${lines.join("")}<line id="mdx" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="#cbd5e1" stroke-width="1" style="display:none"/></svg><div id="mdtt" class="mdtt" style="display:none"></div></div>
 <div class="mute" style="font-size:12px;margin:4px 0 8px">Finger aufs Diagramm legen und ziehen zeigt alle Werte. Tippen auf einen Namen hebt das Depot hervor, ⦸ blendet es aus. Gestrichelt = Vergleichsindex.</div>
 <div class="mdrk">${rk.map((s,i)=>{const d=bv!=null&&!s.bench?s.last-bv:null, off=MDS.off.includes(s.n);
-return `<div class="mdr${MDS.sel===s.n?" on":""}${off?" off":""}" data-md="sel:${esc(s.n)}"><b>${i+1}.</b><i style="background:${s.col}${s.bench?";background:repeating-linear-gradient(90deg,"+s.col+" 0 4px,transparent 4px 7px)":""}"></i><span class="mdn">${esc(s.n)}</span><span class="${cls(s.last)}">${fmtP(s.last)}</span><small class="${d==null?"mute":cls(d)}">${d==null?(s.bench?"Index":""):(d>=0?"+":"")+dz(d,1)+" Pp"}</small><button class="mdo" data-md="off:${esc(s.n)}" aria-label="ein/aus">${off?"○":"⦸"}</button></div>`;}).join("")}</div>
-<div class="mute" style="font-size:12px;margin-top:4px">Rendite im gewählten Zeitraum · Pp = Prozentpunkte besser oder schlechter als MSCI World. ${MDS.mode==="eur"?"€-Werte: indexierter Verlauf × Startkapital.":""}</div>`;}
+return `<div class="mdr${MDS.sel===s.n?" on":""}${off?" off":""}" data-md="sel:${esc(s.n)}"><b>${i+1}.</b><i style="background:${s.col}${s.bench?";background:repeating-linear-gradient(90deg,"+s.col+" 0 4px,transparent 4px 7px)":""}"></i><span class="mdn">${esc(s.n)}${s.spar?` <small class="mute">auf investiert</small>`:""}</span><span class="${cls(s.last)}">${fmtP(s.last)}</span><small class="${d==null?"mute":cls(d)}">${d==null?(s.bench?"Index":""):(d>=0?"+":"")+dz(d,1)+" Pp"}</small><button class="mdo" data-md="off:${esc(s.n)}" aria-label="ein/aus">${off?"○":"⦸"}</button></div>`;}).join("")}</div>
+<div class="mute" style="font-size:12px;margin-top:4px">Rendite im gewählten Zeitraum · Pp = Prozentpunkte besser oder schlechter als MSCI World. € = echter Depotwert inkl. Bargeld. ETF-Sparplan: Die monatlichen 50 € kommen aus seinem eigenen Bargeld, der €-Wert ist also echt. Seine % beziehen sich auf das bisher investierte Geld, nicht auf die ganzen 500 € – sonst würde das wartende Bargeld die Rendite verwässern.</div>`;}
 function mdTip(ev){ const sv=document.getElementById("mdsvg"); if(!sv) return; const {dt,S}=mdData(), n=dt.length, r=sv.getBoundingClientRect(), W=+sv.getAttribute("width"), sc=r.width/W;
 const x=(ev.clientX-r.left)/sc, i=Math.max(0,Math.min(n-1,Math.round((x-6)/((W-52)/Math.max(1,n-1)))));
 const cx=6+(n<2?0:i*(W-52)/(n-1)), ln=document.getElementById("mdx"), tt=document.getElementById("mdtt"); ln.setAttribute("x1",cx);ln.setAttribute("x2",cx);ln.style.display="";
