@@ -237,6 +237,7 @@ nav{background:#0b0b0be6;border-color:var(--line)}nav button.on{background:var(-
 input:focus,select:focus{border-color:var(--hi)}.lnk{border-bottom-color:#bc002d88}
 th{color:#a49d90}a{color:#e0485f}
 button.pri,.btn{border-color:var(--hi)}
+details.fold{margin-bottom:10px;padding:0}details.fold>summary{list-style:none;cursor:pointer;min-height:48px;padding:12px 44px 12px 16px;position:relative;display:block}details.fold>summary::-webkit-details-marker{display:none}details.fold>summary::after{content:"▸";position:absolute;right:16px;top:14px;color:#e0485f;font-size:16px}details.fold[open]>summary::after{content:"▾"}details.fold>summary h3{margin:0;font-size:14px}details.fold .fsum{display:block;font-size:12.5px;color:var(--mute);margin-top:4px;line-height:1.4}details.fold[open] .fsum{display:none}details.fold>.fbody{padding:0 16px 14px}.foldall{min-height:44px;padding:10px 16px;border-radius:12px;border:1px solid #bc002d;background:#bc002d22;color:#f3efe6;font-weight:650;margin:0 0 12px;cursor:pointer}
 </style></head><body>
 <header><h1><span class="hanko" aria-hidden="true">市</span><span>Markt<em>daten</em></span><small class="jp">市場</small></h1><span class="sub" id="stand"></span>
 <div class="ctl"><input id="q" placeholder="Suche (Name/Ticker)…"><select id="fg"></select>
@@ -1253,6 +1254,14 @@ function flMove(e){const sv=e.target.closest("svg.flsv");if(!sv)return;const b=s
 const i=Math.max(0,Math.min(n-1,Math.round(((e.clientX-b.left)/b.width*1000-6)/(938)*(n-1)))),x=6+i/(n-1)*938,l=sv.querySelector(".flc");
 l.setAttribute("x1",x);l.setAttribute("x2",x);l.style.display="";sv.nextElementSibling.textContent=`${d[i]}: ${v[i]==null?"–":dz(v[i],+sv.dataset.fz)} ${sv.dataset.fe}`;}
 document.addEventListener("pointerdown",flMove);document.addEventListener("pointermove",e=>{if(e.buttons||e.pointerType==="mouse")flMove(e);});
+function foldWrap(html,pfx,sums){const t=document.createElement("template");t.innerHTML=html;
+t.content.querySelectorAll(".card").forEach(c=>{const h=c.querySelector("h3");if(!h||c.closest("details.fold"))return;const tx=h.textContent,k=pfx+"_"+(Object.keys(sums).find(r=>new RegExp(r).test(tx))||tx.replace(/[^A-Za-zÄÖÜäöü]/g,"").slice(0,20));
+const d=document.createElement("details");d.className="card fold";if(c.id)d.id=c.id;d.dataset.fold=k;if(localStorage.getItem("fold_"+k)==="auf")d.open=true;
+const sm=document.createElement("summary");h.remove();sm.appendChild(h);const f=document.createElement("span");f.className="fsum";f.textContent=sums[Object.keys(sums).find(r=>new RegExp(r).test(tx))]||"";sm.appendChild(f);
+const b=document.createElement("div");b.className="fbody";while(c.firstChild)b.appendChild(c.firstChild);d.appendChild(sm);d.appendChild(b);c.replaceWith(d);});
+const bt=`<button class="foldall" data-foldall="${pfx}">Alle auf/zu ▾▸</button>`,ds=t.content.querySelector(".disc");if(ds){ds.insertAdjacentHTML("afterend",bt);return t.innerHTML;}return bt+t.innerHTML;}
+document.addEventListener("toggle",e=>{const d=e.target;if(d.dataset&&d.dataset.fold)try{localStorage.setItem("fold_"+d.dataset.fold,d.open?"auf":"zu")}catch(_){}},true);
+document.addEventListener("click",e=>{const b=e.target.closest("[data-foldall]");if(!b)return;const ds=[...document.querySelectorAll("details.fold")],o=!ds.some(d=>d.open);ds.forEach(d=>d.open=o);});
 V.flows=()=>{const F=D.FL||{},T=F.test||{},q=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
 const badge=(t,c)=>`<span class="flb" style="border-color:${c};color:${c}">${t}</span>`;
 let h=`<div class="sec">Positionierung & Flows <span class="jp mute">建玉と資金</span></div>`;
@@ -1324,7 +1333,13 @@ if(T4.tests)h+=`<div class="card"><h3>🧪 Test Quellen 4</h3><p class="mute">Wi
 }
 // Test
 if(T.tests){h+=`<div class="card" id="fltest"><h3>🧪 Test: Sagen diese Daten Kurse voraus?</h3><p class="mute">Geprüft: 20-Tage-Rendite nach dem Signal, bereinigt um den Trend, den die Ampel schon kennt. t-Wert mit Korrektur für überlappende Zeiträume, Daten in zwei Hälften geteilt. „Hält“ nur, wenn beide Hälften in dieselbe Richtung zeigen und die zweite Hälfte |t| ≥ 2 hat.</p><div class="tw"><table class="pls"><tr><th>Signal</th><th>Gruppe</th><th class="n">t</th><th class="n">t 2. Hälfte</th><th>hält?</th></tr>${T.tests.map(r=>`<tr><td>${esc(r.n)}</td><td>${esc(r.g)}</td><td class="n">${dz(r.t,1)}</td><td class="n">${dz(r.to,1)}</td><td>${r.h?"✅":"–"}</td></tr>`).join("")}</table></div></div>`;}
-return h;};
+const fz=x=>x==null?"–":dz(x,0),cotS=Object.values(F.cot||{}).map(c=>`${c.name.split(" ")[0]} ${fz(c.idx)}`).slice(0,5).join(" · "),Kb=(F.krypto||{})["BTC-USD"],Ee=F.etf,Ww=F.whale,Zz=F.zins||{},Qq=F.q4||{};
+const sums={"Zinserwartung":Zz.effr!=null?`Leitzins ${dz(Zz.effr,2)} % · in 6 M. ${Zz.m6_bp>0?"+":""}${Zz.m6_bp} bp · in 12 M. ${Zz.m12_bp>0?"+":""}${Zz.m12_bp} bp`:"","COT":cotS?`COT-Index: ${cotS}`:"","Funding":Kb?`BTC Funding ${dz(Kb.funding_7d_pa,1)} % p.a. · OI 7T ${Kb.oi_d7!=null?fmtP(Kb.oi_d7):"–"}`:"",
+"ETF":Ee?`Letzter Tag ${Ee.tag>0?"+":""}${dz(Ee.tag,0)} Mio. · 5 Tage ${Ee.w5>0?"+":""}${dz(Ee.w5,0)} Mio. USD`:"","Whale":Ww&&Ww.t7?`BTC netto auf Börsen 7 T: ${dz((Ww.t7.BTC||{}).netto,0)} Mio. USD · noch im Test`:"",
+"Angst":Qq.fng_krypto?`Krypto ${Qq.fng_krypto.wert}/100 · Aktien ${Qq.fng_aktien?dz(Qq.fng_aktien.wert,0):"–"}/100`:"","Suchtrends":(Qq.trends||[]).map(t=>`${t.kw} ${t.wert}`).join(" · "),
+"Kredit":Qq.kredit?`HY ${dz(Qq.kredit.hy,2)} % · IG ${dz(Qq.kredit.ig,2)} % (gehalten, Vorbehalt)`:"","On-Chain":Qq.stable?`Stablecoins ${dz(Qq.stable.mrd,0)} Mrd. $ (30 T ${fmtP(Qq.stable.d30)})${Qq.lth?` · LTH-SOPR ${dz(Qq.lth.w7,2)}`:""}`:"",
+"Polymarket":(Qq.polymarket||[])[0]?`${Qq.polymarket[0].titel}: ${Qq.polymarket[0].m[0].t} ${dz(Qq.polymarket[0].m[0].p,0)} %`:"","Quellen 4":"Gehalten: IG-Spread, LTH-SOPR","Sagen diese":"Gehalten: nur der Zins-Hinweis für Aktien"};
+return foldWrap(h,"fl",sums);};
 function render(){ if(!V[tab]) tab="start"; try{localStorage.setItem("tab",tab);}catch(e){} if(location.hash.slice(1)!==tab) history.replaceState(null,"","#"+tab); navRender(); if(document.getElementById("sheet").classList.contains("open")) sheet(false);
 document.getElementById("view").innerHTML=V[tab](gefiltert()); mobil(); }
 document.getElementById("stand").textContent=`Stand ${D.standz||D.stand} · ${D.assets.length} Assets`;
